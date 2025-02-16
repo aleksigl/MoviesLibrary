@@ -1,3 +1,5 @@
+import random
+
 class Movies:
     def __init__(self, title: str, release_year: int, genre: str, views: int, library):
         self.title = title
@@ -63,6 +65,11 @@ class Library:
         else:
             return f"No positions found matching {title}."
 
+    def generate_views(self):
+        item = random.choice(self.library)
+        item.views = random.choice(range(1,101))
+        return f"Selected title: {item.title}\nNo of views after random increse: {item.views}"
+
 
 my_library = Library()
 
@@ -86,3 +93,5 @@ for series in tv_series:
     print(series)
 
 print(my_library.search("Breaking Bad"))
+
+print(my_library.generate_views())
