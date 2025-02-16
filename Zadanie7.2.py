@@ -13,7 +13,7 @@ class Movies:
         self.views += 1
 
     def __str__(self) -> str:
-        return f'\n{self.title} ({self.release_year})'
+        return f'{self.title} ({self.release_year})'
 
     def add_to_library(self, library):
         if isinstance(library, Library):
@@ -29,7 +29,7 @@ class TvSeries(Movies):
         self.season_no = season_no
 
     def __str__(self) -> str:
-        return f'\n{self.title} S{self.season_no:02d}E{self.episode_no:02d}'
+        return f'{self.title} S{self.season_no:02d}E{self.episode_no:02d}'
 
 
 class Library:
@@ -54,6 +54,15 @@ class Library:
         series_list = [item for item in self.library if isinstance(item, TvSeries)]
         return sorted(series_list, key=lambda x: x.title)
 
+    def search(self, title: str):
+        matching_content = [item for item in self.library if item.title == title]
+        if matching_content:
+            result = f"\nBelow you will find all positions matching {title}:\n"
+            result += "\n".join(str(item) for item in matching_content)
+            return result
+        else:
+            return f"No positions found matching {title}."
+
 
 my_library = Library()
 
@@ -61,6 +70,8 @@ movie_1 = Movies("Inception", 2010, "Sci-Fi", 1000000, my_library)
 tv_series_1 = TvSeries("Stranger Things", 2016, "Horror", 5000000, 3, 1, my_library)
 movie_2 = Movies("The Matrix", 1999, "Action", 2000000, my_library)
 tv_series_2 = TvSeries("Breaking Bad", 2008, "Crime", 4000000, 12, 5, my_library)
+tv_series_3 = TvSeries("Breaking Bad", 2008, "Crime", 3450000, 11, 5, my_library)
+
 
 my_library.display_library()
 
@@ -73,3 +84,5 @@ tv_series = my_library.get_series()
 print("\nTV series in the library:")
 for series in tv_series:
     print(series)
+
+print(my_library.search("Breaking Bad"))
