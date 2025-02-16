@@ -68,8 +68,14 @@ class Library:
     def generate_views(self):
         item = random.choice(self.library)
         item.views = random.choice(range(1,101))
-        return f"Selected title: {item.title}\nNo of views after random increse: {item.views}"
+        return item
 
+    def ten_generated_views(self):
+        results = []
+        for item in range(10):
+            result = self.generate_views()
+            results.append((result.title, result.views))
+        return results
 
 my_library = Library()
 
@@ -94,4 +100,10 @@ for series in tv_series:
 
 print(my_library.search("Breaking Bad"))
 
-print(my_library.generate_views())
+generated_view = my_library.generate_views()
+print(f"\nSelected title: {generated_view.title}\nNumber of views after random increase: {generated_view.views}")
+
+generated_views = my_library.ten_generated_views()
+print("\nGenerated views for 10 random items:")
+for title, views in generated_views:
+    print(f"Selected title: {title}\nNumber of views after random increase: {views}")
