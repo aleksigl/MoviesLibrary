@@ -31,8 +31,20 @@ class TvSeries(Movies):
         self.episode_no = episode_no
         self.season_no = season_no
 
+    @classmethod
+    def add_entire_season(cls, title, release_year, genre, season_no, episodes_to_add: int, library):
+        if episodes_to_add > 0:
+            for episode in range(1, episodes_to_add + 1):
+                tv_series = TvSeries(title, release_year, genre, views, episode, season_no, library)
+                library.add_to_library(tv_series)
+            print(f"{episodes_to_add} episodes of tv series {title} season {season_no} successfully added to library.")
+        else:
+            print("Number of episodes needs to be larger than 0.")
     def __str__(self) -> str:
         return f'{self.title} S{self.season_no:02d}E{self.episode_no:02d}'
+
+    def count_episodes(self, library):
+        return library.count_series_episodes(self.title)
 
 
 class Library:
@@ -40,7 +52,7 @@ class Library:
         self.library = []
 
     def add_to_library(self, instance):
-        if isinstance(instance, (Movies, TvSeries)):
+        if isinstance(instance, Movies):
             self.library.append(instance)
         else:
             print("Only instances of Movies or TvSeries can be added.")
@@ -93,6 +105,10 @@ class Library:
         random_titles = random.sample(top_titles_list, num_titles)
         return random_titles
 
+    def count_series_episodes(self, title: str) -> int:
+        series_not_movies = self.get_series()
+        result = len([item for item in series_not_movies if title == item.title])
+        return result
 
 my_library = Library()
 
@@ -101,7 +117,6 @@ tv_series_1 = TvSeries("Stranger Things", 2016, "Horror", 5000000, 3, 1, my_libr
 movie_2 = Movies("The Matrix", 1999, "Action", 2000000, my_library)
 tv_series_2 = TvSeries("Breaking Bad", 2008, "Crime", 4000000, 12, 5, my_library)
 tv_series_3 = TvSeries("Breaking Bad", 2008, "Crime", 3450000, 11, 5, my_library)
-
 
 my_library.display_library()
 
@@ -129,3 +144,8 @@ top_movie_titles = my_library.top_titles("movie")
 print("\nTop movie titles:")
 for movie in top_movie_titles:
     print(f"{movie.title} - {movie.views} views")
+
+number_of_episodes = my_library.count_series_episodes("Breaking Bad")
+print(f"The number of available episodes for TV Series 'Breaking Bad' is: {number_of_episodes}.")
+
+TvSeries.add_entire_season("Vampire Diaries", 1989, "Drama", 4, 22, my_library)
