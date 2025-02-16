@@ -1,5 +1,3 @@
-library = []
-
 class Movies:
     def __init__(self, title: str, release_year: str, genre: str, views: int):
         self.title = title
@@ -10,11 +8,11 @@ class Movies:
         if not isinstance(release_year, int) or release_year < 1880 or release_year > 2100:
             raise ValueError("Release year must be a valid integer between 1880 and 2100")
 
-    def play(self) -> int:
+    def play(self):
         self.views += 1
 
     def __str__(self) -> str:
-        return (f'\n{self.title} ({self.release_year})')
+        return f'\n{self.title} ({self.release_year})'
 
 
 class TvSeries(Movies):
@@ -24,7 +22,8 @@ class TvSeries(Movies):
         self.season_no = season_no
 
     def __str__(self) -> str:
-        return (f'\n{self.title} S{self.season_no:02d}E{self.episode_no:02d}')
+        return f'\n{self.title} S{self.season_no:02d}E{self.episode_no:02d}'
+
 
 class Library:
     def __init__(self):
@@ -39,6 +38,7 @@ class Library:
     def display_library(self):
         for item in self.library:
             print(item)
+
 
 my_library = Library()
 
