@@ -1,5 +1,6 @@
 import random
 
+
 class Movies:
     def __init__(self, title: str, release_year: int, genre: str, views: int, library):
         self.title = title
@@ -67,7 +68,7 @@ class Library:
 
     def generate_views(self):
         item = random.choice(self.library)
-        item.views = random.choice(range(1,101))
+        item.views = random.choice(range(1, 101))
         return item
 
     def ten_generated_views(self):
@@ -76,6 +77,22 @@ class Library:
             result = self.generate_views()
             results.append((result.title, result.views))
         return results
+
+    def top_titles(self, content_type: str):
+        top_titles_list = []
+        if content_type.lower() == "movie":
+            movies = self.get_movies()
+            top_titles_list = sorted(movies, key=lambda x: x.views, reverse=True)
+        elif content_type.lower() == "tv series":
+            series = self.get_series()
+            top_titles_list = sorted(series, key=lambda x: x.views, reverse=True)
+        else:
+            print("Invalid content type. Please choose 'movie' or 'tv series'.")
+
+        num_titles = random.randint(1, len(top_titles_list))
+        random_titles = random.sample(top_titles_list, num_titles)
+        return random_titles
+
 
 my_library = Library()
 
@@ -107,3 +124,8 @@ generated_views = my_library.ten_generated_views()
 print("\nGenerated views for 10 random items:")
 for title, views in generated_views:
     print(f"Selected title: {title}\nNumber of views after random increase: {views}")
+
+top_movie_titles = my_library.top_titles("movie")
+print("\nTop movie titles:")
+for movie in top_movie_titles:
+    print(f"{movie.title} - {movie.views} views")
